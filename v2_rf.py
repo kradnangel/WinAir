@@ -49,7 +49,7 @@ def preprocess(titles, raw, iiMaps, base):
                 day = int(item[8:10])
                 now = datetime.date(year, month, day)
                 new = (now - dac).days           
-                new = d.pop(); ###
+                # new = d.pop(); ###
             elif title == 'date_first_booking': #3
                 if len(item) < 10:
                     new = 0
@@ -61,10 +61,10 @@ def preprocess(titles, raw, iiMaps, base):
                     new = (now - dfb).days
                 new = d.pop();###
             elif title == 'timestamp_first_active': #2
-                new = int(item) - tfa
+                new = math.sqrt(int(item) - tfa)
             elif title == 'age': #5
                 if item == '':
-                    age = 0
+                    age = 37
                 else:
                     age = int(float(item))
                 if 10 < age < 120:
@@ -72,13 +72,13 @@ def preprocess(titles, raw, iiMaps, base):
                 elif age in xrange(1900,2000):
                     new = 2015 - age
                 else:
-                    new = 0
+                    new = 37
             else:
                 new = iiMaps[title][item]
             d.append(new)
         data.append(d[:])
-        X.append(d[:13])
-        if len(d) > 13: y.append(d[13])
+        X.append(d[:14])
+        if len(d) > 14: y.append(d[14])
     print 'preprocess done!'
     return X, y, data
 
@@ -86,7 +86,9 @@ def writeCSV(filename, title, users, content):
     writer = open(filename,'w')
     writer.write(title + '\n')
     for i in range(len(content)):
-        writer.write(users[i]+','+str(content[i]) + '\n')
+        writer.write(users[i]+','+content[i] + '\n')
+        if content[i] != 'NDF':
+            writer.write(users[i]+','+ 'NDF' + '\n')
     writer.close()
     print "Finished writing!"
 
