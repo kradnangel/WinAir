@@ -30,7 +30,7 @@ def imap(ttSets):
     return itemMap
 
 ## preprocess the train data
-def preprocess(titles, raw, iiMaps, base):
+def preprocess(titles, raw, iiMaps, base, with_target=True):
     dac = datetime.date(2010,6,27)
     dfb = datetime.date(2010,1,1)
     tfa = 20090219043255
@@ -43,25 +43,27 @@ def preprocess(titles, raw, iiMaps, base):
             item = row[i]
             if title == 'id':   #0
                 new, j = j, j+1
+                # d.append(new)
             elif title == 'date_account_created':   #1
                 year = int(item[0:4])
                 month = int(item[5:7])
                 day = int(item[8:10])
                 now = datetime.date(year, month, day)
-                new = (now - dac).days           
-                # new = d.pop(); ###
+                new = float((now - dac).days)
+                d.append(new)    
             elif title == 'date_first_booking': #3
                 if len(item) < 10:
-                    new = 0
+                    new = 0.
                 else:
                     year = int(item[0:4])
                     month = int(item[5:7])
                     day = int(item[8:10])
                     now = datetime.date(year, month, day)
-                    new = (now - dfb).days
-                new = d.pop();###
+                    new = float((now - dfb).days)
+            # d.append(new)
             elif title == 'timestamp_first_active': #2
                 new = math.sqrt(int(item) - tfa)
+                d.append(new)
             elif title == 'age': #5
                 if item == '':
                     age = 37
@@ -73,12 +75,16 @@ def preprocess(titles, raw, iiMaps, base):
                     new = 2015 - age
                 else:
                     new = 37
+                d.append(new)
             else:
                 new = iiMaps[title][item]
-            d.append(new)
+                d.append(new)
         data.append(d[:])
-        X.append(d[:14])
-        if len(d) > 14: y.append(d[14])
+        if with_target:
+            X.append(d[:-1])
+            y.append(d[-1])
+        else:
+            X.append(d[:])
     print 'preprocess done!'
     return X, y, data
 
@@ -114,7 +120,7 @@ itemMap = imap(ttSets)
     # print ii, itemMap[ii]
 
 ### preprocess
-X, y, data = preprocess(titles, rawData, itemMap, 0)
+X, y, data = preprocess(titles, rawData, itemMap, 0, with_target=True)
 print "After preprocess"
 
 ### divide the data into training data and validation data
@@ -139,10 +145,9 @@ yp_valid = estimator.predict(X_valid)
 print 'Validation error', sum(map(lambda y,yp: y != yp, y_valid, yp_valid)) * 1.0 / (n-bound)
 
 ### Testing data
-X_test, _, testData = preprocess(testTitles, testRaw, itemMap, n+1)
+X_test, _, testData = preprocess(testTitles, testRaw, itemMap, n+1, with_target=False)
 yp_test = estimator.predict(X_test)
 countryMap = {}
 for key in itemMap['country_destination']:
     countryMap[itemMap['country_destination'][key]] = key
 writeCSV('submit.csv', 'id,country', [d[0] for d in testRaw], map(lambda y:countryMap[y], yp_test))
-
