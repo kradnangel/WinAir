@@ -35,3 +35,24 @@ Training error 2.08219463314e-05
 Validation error 0.395483931416
 
 Testing score 0.73602
+
+## Submissions
+
+### 1.
+
+  #### Feature
+
+  * All basic features
+  * Converting date_account_created and date_first_booking into float
+
+  #### Algorithm
+
+  * Basic random forest, n_estimators=100, n_jobs = -1, max_features = 'sqrt'
+
+  #### Result
+
+  * Training error 0.00717316051118
+  * Validation error 0.404384896468
+  * Kaggle score: 0.73683
+
+
