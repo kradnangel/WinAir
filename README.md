@@ -30,4 +30,8 @@ Testing score 0.65611
 
 2. If the prediction is not 'NDF', add 'NDF' as the second prediction for this user.
 
+Training error 2.08219463314e-05
+
+Validation error 0.395483931416
+
 Testing score 0.73602
