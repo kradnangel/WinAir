@@ -1,6 +1,5 @@
 # WinAir
-
-
+This is the code for the competition -- Airbnb New User Bookings
 
 ## Statistic
 Average age: 37
@@ -38,21 +37,20 @@ Testing score 0.73602
 
 ## Submissions
 
-### 1.
-
-  #### Feature
+#### Feature
 
   * All basic features
   * Converting date_account_created and date_first_booking into float
 
-  #### Algorithm
+#### Algorithm
 
   * Basic random forest, n_estimators=100, n_jobs = -1, max_features = 'sqrt'
 
-  #### Result
+#### Result
 
   * Training error 0.00717316051118
   * Validation error 0.404384896468
   * Kaggle score: 0.73683
+  
 
 
