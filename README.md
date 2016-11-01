@@ -1,7 +1,14 @@
 # WinAir
 This is the code for the competition -- [Airbnb New User Bookings](https://www.kaggle.com/c/airbnb-recruiting-new-user-bookings)
 
+The task is predicting which country a new user's first booking destination will be.
+
 ## Statistic
+
+All the users in this dataset are from the USA.
+
+The training and test sets are split by dates.
+
 Average age: 37
 
 {'AU': 539,
